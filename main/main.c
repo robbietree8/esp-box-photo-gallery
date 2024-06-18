@@ -3,12 +3,15 @@
 #include "freertos/task.h"
 #include "esp_err.h"
 #include "esp_log.h"
+#include "bsp/esp-bsp.h"
 #include "bsp/esp-box-3.h"
 #include "bsp_board.h"
 #include "esp_vfs_fat.h"
 #include "sdmmc_cmd.h"
 #include "file_iterator.h"
 #include <ctype.h>
+#include "audio_player.h"
+#include "bsp_board.h"
 
 
 #define MOUNT_MAX_FILES 100
@@ -56,11 +59,6 @@ static esp_err_t mount_sdcard()
     sdmmc_card_print_info(stdout, bsp_sdcard);
 
     return ret;
-}
-
-static void unmount_sdcard()
-{
-    esp_vfs_fat_sdcard_unmount(BSP_SD_MOUNT_POINT, bsp_sdcard);
 }
 
 static void init_indev()
@@ -160,10 +158,53 @@ const char* get_next_image()
     return filename;
 }
 
+static esp_err_t audio_mute_function(AUDIO_PLAYER_MUTE_SETTING setting)
+{
+    // Volume saved when muting and restored when unmuting. Restoring volume is necessary
+    // as es8311_set_voice_mute(true) results in voice volume (REG32) being set to zero.
+    uint8_t volume = 50;
+
+    bsp_codec_mute_set(setting == AUDIO_PLAYER_MUTE ? true : false);
+
+    // restore the voice volume upon unmuting
+    if (setting == AUDIO_PLAYER_UNMUTE) {
+        bsp_codec_volume_set(volume, NULL);
+    }
+
+    return ESP_OK;
+}
+
+static void audio_callback(audio_player_cb_ctx_t *ctx)
+{
+    ESP_LOGI(TAG, "Audio callback: %d", ctx->audio_event);
+}
+
+static void init_audio()
+{
+    audio_player_config_t config = { .mute_fn = audio_mute_function,
+                                     .write_fn = bsp_i2s_write,
+                                     .clk_set_fn = bsp_codec_set_fs,
+                                     .priority = 1
+                                   };
+    ESP_ERROR_CHECK(audio_player_new(config));
+
+    audio_player_callback_register(audio_callback, NULL);
+}
+
+static void play_audio()
+{
+    FILE *fp = fopen("/spiffs/Canon.mp3", "rb");
+    if(fp) {
+        audio_player_play(fp);
+    }else {
+        ESP_LOGE(TAG, "File not found");
+    }
+}
+
 void app_main(void)
 {
     /* Initialize I2C (for touch and audio) */
-    bsp_i2c_init();
+    ESP_ERROR_CHECK(bsp_i2c_init());
 
     /* Initialize display and LVGL */
     bsp_display_cfg_t cfg = {
@@ -183,11 +224,16 @@ void app_main(void)
 
     file_iterator = file_iterator_new("/sdcard");
     assert(file_iterator != NULL);
-    for (size_t i = 0; i < file_iterator_get_count(file_iterator); i++) {
-        ESP_LOGI(TAG, "File : %s", file_iterator_get_name_from_index(file_iterator, i));
-    }
 
     init_indev();
     
     xTaskCreatePinnedToCore(image_show, "image_show task", 1024 * 4, NULL, 1, NULL, 0);
+
+    bsp_spiffs_mount();
+
+    bsp_board_init();
+
+    init_audio();
+
+    play_audio();
 }

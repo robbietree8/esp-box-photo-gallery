@@ -1,16 +1,28 @@
 dependencies:
+  chmorgan/esp-audio-player:
+    component_hash: 91db3ef5b4ac2185ffb94a069ab0c4731170a20f9d46470f3f071ca22a475d5c
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.0.5
   chmorgan/esp-file-iterator:
     component_hash: 327091394b9ef5c2cd395a960ab70ae64479e0a8831cbd9925e38895fad93719
     source:
       service_url: https://api.components.espressif.com/
       type: service
     version: 1.0.0
-  espressif/button:
-    component_hash: 1f5297fe16f0ee988dbb14b6f4c91782fe2baf85025bb15cc1e0093edd3fb2ee
+  chmorgan/esp-libhelix-mp3:
+    component_hash: cbb76089dc2c5749f7b470e2e70aedc44c9da519e04eb9a67d4c7ec275229e53
     source:
       service_url: https://api.components.espressif.com/
       type: service
-    version: 3.2.0
+    version: 1.0.3
+  espressif/button:
+    component_hash: 16a2f5c573e5b6bac30565fdd4b20a155f24a4b438ae1a3cced89ea84ddce7ae
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 3.2.1
   espressif/cmake_utilities:
     component_hash: 351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f
     source:
@@ -81,13 +93,13 @@ dependencies:
     component_hash: null
     source:
       type: idf
-    version: 5.4.0
+    version: 5.2.2
   lvgl/lvgl:
     component_hash: d7c1ac037ae6e85d94897f807d6e7ba0946a83e720074fc95a4f6241da9f9f53
     source:
       service_url: https://api.components.espressif.com/
       type: service
     version: 8.4.0
-manifest_hash: 4a8d3ea89b32e4250dbc3d9c1676b38b6fecb74cfb38271918478b5277e81258
+manifest_hash: 0b64a9b278a55e72a1ba6e5bdb79bc755b8156aa2e34647005f6d3b4f1e2b76e
 target: esp32s3
 version: 1.0.0
