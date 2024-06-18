@@ -1,10 +1,4 @@
 dependencies:
-  chmorgan/esp-audio-player:
-    component_hash: 91db3ef5b4ac2185ffb94a069ab0c4731170a20f9d46470f3f071ca22a475d5c
-    source:
-      service_url: https://api.components.espressif.com/
-      type: service
-    version: 1.0.5
   chmorgan/esp-file-iterator:
     component_hash: 327091394b9ef5c2cd395a960ab70ae64479e0a8831cbd9925e38895fad93719
     source:
@@ -100,6 +94,6 @@ dependencies:
       service_url: https://api.components.espressif.com/
       type: service
     version: 8.4.0
-manifest_hash: 0b64a9b278a55e72a1ba6e5bdb79bc755b8156aa2e34647005f6d3b4f1e2b76e
+manifest_hash: 34e3b669201711b7caa5954554c0049dad130ac5302fe95232b833c03060c0e3
 target: esp32s3
 version: 1.0.0

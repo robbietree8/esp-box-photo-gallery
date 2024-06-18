@@ -26,6 +26,7 @@ file_iterator_instance_t *file_iterator;
 static lv_group_t *g_btn_op_group = NULL;
 
 const char* get_next_image();
+static void play_audio();
 
 static esp_err_t mount_sdcard()
 {
@@ -177,6 +178,9 @@ static esp_err_t audio_mute_function(AUDIO_PLAYER_MUTE_SETTING setting)
 static void audio_callback(audio_player_cb_ctx_t *ctx)
 {
     ESP_LOGI(TAG, "Audio callback: %d", ctx->audio_event);
+    if(ctx->audio_event == AUDIO_PLAYER_CALLBACK_EVENT_IDLE) {
+        play_audio();
+    }
 }
 
 static void init_audio()
@@ -184,7 +188,8 @@ static void init_audio()
     audio_player_config_t config = { .mute_fn = audio_mute_function,
                                      .write_fn = bsp_i2s_write,
                                      .clk_set_fn = bsp_codec_set_fs,
-                                     .priority = 1
+                                     .priority = 1,
+                                     .coreID = 1
                                    };
     ESP_ERROR_CHECK(audio_player_new(config));
 
