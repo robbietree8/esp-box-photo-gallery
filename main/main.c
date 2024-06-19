@@ -21,6 +21,7 @@ static const char *SUFFIX = ".png";
 static const char *PREFIX = ".";
 static lv_obj_t *img = NULL;
 static lv_obj_t *label = NULL;
+static bool mute_flag = false;
 
 file_iterator_instance_t *file_iterator;
 static lv_group_t *g_btn_op_group = NULL;
@@ -174,19 +175,31 @@ static esp_err_t audio_mute_function(AUDIO_PLAYER_MUTE_SETTING setting)
 static void audio_callback(audio_player_cb_ctx_t *ctx)
 {
     ESP_LOGI(TAG, "Audio callback: %d", ctx->audio_event);
-    if(ctx->audio_event == AUDIO_PLAYER_CALLBACK_EVENT_IDLE) {
+    switch (ctx->audio_event) {
+    case AUDIO_PLAYER_CALLBACK_EVENT_IDLE:
         play_audio();
+        break;
+    case AUDIO_PLAYER_CALLBACK_EVENT_PLAYING:
+        if(mute_flag) {
+            audio_player_pause();
+        }
+        break;
+    default:
+        break;
     }
 }
 
 void mute_btn_handler(void *handle, void *arg)
 {
     button_event_t event = (button_event_t)arg;
+    ESP_LOGI(TAG, "Button event: %d", event);
 
     if (BUTTON_PRESS_DOWN == event) {
-        bsp_codec_mute_set(true);
+        mute_flag = true;
+        audio_player_pause();
     } else {
-        bsp_codec_mute_set(false);
+        audio_player_resume();
+        mute_flag = false;
     }
 }
 
