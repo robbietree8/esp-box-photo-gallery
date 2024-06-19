@@ -161,15 +161,11 @@ const char* get_next_image()
 
 static esp_err_t audio_mute_function(AUDIO_PLAYER_MUTE_SETTING setting)
 {
-    // Volume saved when muting and restored when unmuting. Restoring volume is necessary
-    // as es8311_set_voice_mute(true) results in voice volume (REG32) being set to zero.
-    uint8_t volume = 50;
-
     bsp_codec_mute_set(setting == AUDIO_PLAYER_MUTE ? true : false);
 
     // restore the voice volume upon unmuting
     if (setting == AUDIO_PLAYER_UNMUTE) {
-        bsp_codec_volume_set(volume, NULL);
+        bsp_codec_volume_set(CONFIG_VOLUME_LEVEL, NULL);
     }
 
     return ESP_OK;
@@ -180,6 +176,17 @@ static void audio_callback(audio_player_cb_ctx_t *ctx)
     ESP_LOGI(TAG, "Audio callback: %d", ctx->audio_event);
     if(ctx->audio_event == AUDIO_PLAYER_CALLBACK_EVENT_IDLE) {
         play_audio();
+    }
+}
+
+void mute_btn_handler(void *handle, void *arg)
+{
+    button_event_t event = (button_event_t)arg;
+
+    if (BUTTON_PRESS_DOWN == event) {
+        bsp_codec_mute_set(true);
+    } else {
+        bsp_codec_mute_set(false);
     }
 }
 

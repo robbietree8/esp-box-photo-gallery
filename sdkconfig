@@ -511,6 +511,12 @@ CONFIG_PARTITION_TABLE_MD5=y
 # end of Partition Table
 
 #
+# App Configuration
+#
+CONFIG_VOLUME_LEVEL=50
+# end of App Configuration
+
+#
 # HMI Board Config
 #
 # CONFIG_BSP_BOARD_ESP32_S3_BOX is not set
@@ -2236,7 +2242,7 @@ CONFIG_LV_USE_PNG=y
 # end of LVGL configuration
 
 #
-# Board Support Package(ESP-BOX)
+# Board Support Package(ESP-BOX-3)
 #
 CONFIG_BSP_ERROR_CHECK=y
 
@@ -2258,6 +2264,13 @@ CONFIG_BSP_SPIFFS_MAX_FILES=5
 # end of SPIFFS - Virtual File System
 
 #
+# SD card - Virtual File System
+#
+CONFIG_BSP_SD_FORMAT_ON_MOUNT_FAIL=y
+CONFIG_BSP_SD_MOUNT_POINT="/sdcard"
+# end of SD card - Virtual File System
+
+#
 # Display
 #
 CONFIG_BSP_DISPLAY_BRIGHTNESS_LEDC_CH=1
@@ -2266,10 +2279,25 @@ CONFIG_BSP_LCD_DRAW_BUF_HEIGHT=10
 # end of Display
 
 CONFIG_BSP_I2S_NUM=1
-# end of Board Support Package(ESP-BOX)
+# end of Board Support Package(ESP-BOX-3)
 
 #
-# Board Support Package(ESP-BOX-Lite)
+# ESP LCD TOUCH
+#
+CONFIG_ESP_LCD_TOUCH_MAX_POINTS=5
+CONFIG_ESP_LCD_TOUCH_MAX_BUTTONS=1
+# end of ESP LCD TOUCH
+
+#
+# Audio playback
+#
+CONFIG_AUDIO_PLAYER_ENABLE_MP3=y
+CONFIG_AUDIO_PLAYER_ENABLE_WAV=y
+CONFIG_AUDIO_PLAYER_LOG_LEVEL=0
+# end of Audio playback
+
+#
+# Board Support Package(ESP-BOX)
 #
 
 #
@@ -2286,22 +2314,7 @@ CONFIG_BSP_I2S_NUM=1
 # Display
 #
 # end of Display
-# end of Board Support Package(ESP-BOX-Lite)
-
-#
-# ESP LCD TOUCH
-#
-CONFIG_ESP_LCD_TOUCH_MAX_POINTS=5
-CONFIG_ESP_LCD_TOUCH_MAX_BUTTONS=1
-# end of ESP LCD TOUCH
-
-#
-# Audio playback
-#
-CONFIG_AUDIO_PLAYER_ENABLE_MP3=y
-CONFIG_AUDIO_PLAYER_ENABLE_WAV=y
-CONFIG_AUDIO_PLAYER_LOG_LEVEL=0
-# end of Audio playback
+# end of Board Support Package(ESP-BOX)
 
 #
 # IoT Button
@@ -2330,7 +2343,7 @@ CONFIG_CU_DIAGNOSTICS_COLOR_ALWAYS=y
 # end of CMake Utilities
 
 #
-# Board Support Package(ESP-BOX-3)
+# Board Support Package(ESP-BOX-Lite)
 #
 
 #
@@ -2344,17 +2357,10 @@ CONFIG_CU_DIAGNOSTICS_COLOR_ALWAYS=y
 # end of SPIFFS - Virtual File System
 
 #
-# SD card - Virtual File System
-#
-CONFIG_BSP_SD_FORMAT_ON_MOUNT_FAIL=y
-CONFIG_BSP_SD_MOUNT_POINT="/sdcard"
-# end of SD card - Virtual File System
-
-#
 # Display
 #
 # end of Display
-# end of Board Support Package(ESP-BOX-3)
+# end of Board Support Package(ESP-BOX-Lite)
 
 #
 # Audio Codec Device Configuration

@@ -1,6 +1,6 @@
 # esp-box-photo-gallery
 
-基于`esp-box-3`的电子相册
+基于`esp-box-3`带背景音乐的电子相册
 
 ## image
 
